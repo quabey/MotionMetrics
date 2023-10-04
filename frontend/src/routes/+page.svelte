@@ -5,8 +5,11 @@
 
 	let file;
 	let image; // Reactive variable to hold the image URL
+	let reponseData = "";
+	let loading = false;
 
 	async function postCSVAndShow() {
+		loading = true;
 		try {
 			const form = new FormData();
 			form.append('file', file[0]); // Append the file to the form data
@@ -23,13 +26,17 @@
 
 			if (response.status === 200) {
 				// Convert the ArrayBuffer to a data URL and set it as the image src
-				const blob = new Blob([response.data], { type: 'image/png' });
+				console.log(response);
+				const blob = new Blob([response.data], { type: 'image/svg+xml' });
 				image = URL.createObjectURL(blob);
 			} else {
 				console.error(`Error: ${response.status} - ${response.statusText}`);
 			}
+			reponseData = JSON.stringify(response.data);
 		} catch (error) {
 			console.error('Error posting CSV:', error.message);
+		} finally {
+			loading = false;
 		}
 	}
 </script>
@@ -44,4 +51,10 @@
 	on:change={postCSVAndShow}
 />
 
-<img src={image} alt="Generated Plot" />
+{#if !loading}
+	<img src={image} alt="Generated Plot" />
+{:else}
+	<p>Loading...</p>
+{/if}
+
+
