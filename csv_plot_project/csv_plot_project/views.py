@@ -82,6 +82,7 @@ class FileUploadView(APIView):
         fig.update_layout(
             title='Beschleunigungsdaten über die Zeit (Schrittzahl: ' + str(schrittzähler.schrittzahl) + ')',
             xaxis_title='Zeit (s)',
+            xaxis_tickformat='s',
             yaxis_title='Beschleunigung (m/s^2)',
             )
         output = io.BytesIO()

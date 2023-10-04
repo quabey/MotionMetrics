@@ -1,11 +1,11 @@
 <script>
 	import axios from 'axios'; // import axios
+	import { toast } from 'svelte-french-toast'; // import toast
 
 	const API_URL = 'http://127.0.0.1:8000/plot-csv/'; // Define the API URL
 
 	let file;
 	let image; // Reactive variable to hold the image URL
-	let reponseData = "";
 	let loading = false;
 
 	async function postCSVAndShow() {
@@ -32,11 +32,12 @@
 			} else {
 				console.error(`Error: ${response.status} - ${response.statusText}`);
 			}
-			reponseData = JSON.stringify(response.data);
 		} catch (error) {
 			console.error('Error posting CSV:', error.message);
+			toast.error('Error generating plot!', {position: "top-right"}); // Show a toast
 		} finally {
 			loading = false;
+			toast.success('Plot generated successfully!', {position: "top-right"}); // Show a toast
 		}
 	}
 </script>
